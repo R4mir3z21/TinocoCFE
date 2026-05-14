@@ -1,0 +1,559 @@
+/* ═══════════════════════════════════════════
+   CFE – PROYECTO ACADÉMICO TEAM 3
+   Hoja de estilos principal
+   ═══════════════════════════════════════════ */
+
+/* ── VARIABLES ── */
+:root {
+  --verde: #00A859;
+  --verde-oscuro: #007A40;
+  --verde-claro: #00D170;
+  --negro: #0A0A0A;
+  --gris: #1A1A1A;
+  --gris-medio: #2E2E2E;
+  --gris-claro: #888;
+  --blanco: #F5F5F0;
+  --amarillo: #FFD700;
+  --rojo: #E8352A;
+}
+
+/* ── RESET ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--negro);
+  color: var(--blanco);
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 999;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,168,89,0.3);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 60px;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo-icon {
+  width: 42px; height: 42px;
+  background: var(--verde);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue'; font-size: 18px; color: #fff;
+  animation: pulse-hex 3s ease-in-out infinite;
+}
+@keyframes pulse-hex {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,168,89,0.4); }
+  50%      { box-shadow: 0 0 0 12px rgba(0,168,89,0); }
+}
+.nav-logo-text {
+  font-family: 'Bebas Neue'; font-size: 24px;
+  letter-spacing: 3px; color: var(--verde);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--blanco); text-decoration: none;
+  font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+  opacity: 0.7; transition: opacity .2s, color .2s;
+  position: relative; padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--verde-claro);
+  transition: width .25s;
+}
+.nav-links a:hover { opacity: 1; color: var(--verde-claro); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  background: var(--verde); color: #fff; padding: 10px 24px;
+  border: none; font-family: 'DM Sans'; font-weight: 600; font-size: 13px;
+  letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: background .2s;
+}
+.nav-cta:hover { background: var(--verde-claro); }
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+  padding: 120px 60px 60px;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 70% 50%, rgba(0,168,89,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,209,112,0.07) 0%, transparent 60%),
+    linear-gradient(180deg, #0A0A0A 0%, #111 100%);
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0; opacity: 0.04;
+  background-image:
+    linear-gradient(var(--verde) 1px, transparent 1px),
+    linear-gradient(90deg, var(--verde) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-left { position: relative; z-index: 1; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(20px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,168,89,0.15); border: 1px solid rgba(0,168,89,0.4);
+  padding: 6px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--verde-claro); margin-bottom: 28px;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-tag::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--verde-claro); border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+.hero-h1 {
+  font-family: 'Bebas Neue'; font-size: clamp(64px,8vw,110px);
+  line-height: .92; letter-spacing: -1px; margin-bottom: 24px;
+  animation: fadeUp 0.6s 0.15s ease both;
+}
+.hero-h1 span { color: var(--verde); }
+.hero-sub {
+  font-size: 16px; line-height: 1.7; color: rgba(245,245,240,0.65);
+  max-width: 440px; margin-bottom: 40px;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.hero-btns {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.45s ease both;
+}
+.btn-primary {
+  background: var(--verde); color: #fff; padding: 16px 36px;
+  font-weight: 600; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+  border: none; cursor: pointer;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: all .25s; text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background: var(--verde-claro); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--blanco); padding: 16px 36px;
+  font-weight: 600; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+  border: 1px solid rgba(245,245,240,0.3); cursor: pointer; text-decoration: none;
+  display: inline-block; transition: all .25s;
+}
+.btn-outline:hover { border-color: var(--verde); color: var(--verde); transform: translateY(-2px); }
+
+/* Hero card */
+.hero-right {
+  position: relative; z-index: 1; display: flex; justify-content: center;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-card-stack { position: relative; width: 360px; height: 420px; }
+.hero-card {
+  position: absolute;
+  background: var(--gris); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px; padding: 28px;
+}
+.hero-card-main {
+  width: 340px; height: 380px; top: 20px; left: 10px;
+  background: linear-gradient(135deg, #1a2e1a, #0d1f0d);
+  border: 1px solid rgba(0,168,89,0.3);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.card-logo-sm { font-family: 'Bebas Neue'; font-size: 22px; color: var(--verde); letter-spacing: 2px; }
+.card-badge {
+  background: rgba(0,168,89,0.2); border: 1px solid var(--verde);
+  padding: 4px 10px; font-size: 10px; letter-spacing: 1px;
+  color: var(--verde-claro); text-transform: uppercase;
+}
+.card-price { font-family: 'DM Serif Display'; font-size: 52px; color: var(--blanco); line-height: 1; }
+.card-price span { font-size: 20px; color: var(--verde-claro); }
+.card-desc { font-size: 13px; color: rgba(245,245,240,0.5); margin-top: 6px; }
+.card-bar { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+.card-bar-fill {
+  height: 100%; background: var(--verde); border-radius: 2px;
+  animation: grow 2s 0.5s ease both;
+}
+@keyframes grow { from { width: 0; } to { width: 78%; } }
+.card-stat-row { display: flex; gap: 20px; }
+.card-stat { display: flex; flex-direction: column; gap: 2px; }
+.card-stat-num { font-family: 'Bebas Neue'; font-size: 24px; color: var(--verde-claro); }
+.card-stat-label { font-size: 10px; color: rgba(245,245,240,0.4); text-transform: uppercase; letter-spacing: 1px; }
+.hero-card-back {
+  width: 300px; height: 340px; top: 0; left: 0;
+  background: rgba(0,168,89,0.06);
+  border: 1px solid rgba(0,168,89,0.15);
+  transform: rotate(-4deg);
+}
+
+/* ─────────────────────────────────────────
+   STATS BANNER
+───────────────────────────────────────── */
+.stats-banner {
+  background: var(--verde); padding: 24px 60px;
+  display: flex; justify-content: space-around; align-items: center;
+  flex-wrap: wrap; gap: 20px;
+}
+.stat-item { text-align: center; color: #fff; }
+.stat-num  { font-family: 'Bebas Neue'; font-size: 40px; letter-spacing: 2px; line-height: 1; }
+.stat-label { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; }
+.stat-div  { width: 1px; height: 40px; background: rgba(255,255,255,0.3); }
+
+/* ─────────────────────────────────────────
+   SECCIONES BASE
+───────────────────────────────────────── */
+section { padding: 100px 60px; }
+
+/* offset para el nav fijo al hacer scroll */
+section[id] { scroll-margin-top: 72px; }
+
+.section-eyebrow {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--verde); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--verde); }
+.section-title { font-family: 'Bebas Neue'; font-size: clamp(40px,5vw,72px); line-height: 1; margin-bottom: 16px; }
+.section-sub { color: rgba(245,245,240,0.55); font-size: 15px; max-width: 580px; line-height: 1.7; margin-bottom: 60px; }
+
+/* ─────────────────────────────────────────
+   1. PRODUCTO
+───────────────────────────────────────── */
+#producto { background: var(--negro); }
+.producto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+.producto-desc p { color: rgba(245,245,240,0.7); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+.value-prop-box {
+  background: rgba(0,168,89,0.08); border: 1px solid rgba(0,168,89,0.25);
+  border-left: 3px solid var(--verde); padding: 24px 28px; margin-top: 32px;
+}
+.value-prop-box h4 { color: var(--verde-claro); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.value-prop-box p  { color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.7; }
+.service-cards { display: flex; flex-direction: column; gap: 16px; }
+.service-card {
+  background: var(--gris); border: 1px solid rgba(255,255,255,0.07);
+  padding: 22px 26px; display: flex; align-items: center; gap: 20px;
+  transition: border-color .25s, transform .25s;
+}
+.service-card:hover { border-color: var(--verde); transform: translateX(6px); }
+.service-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  background: rgba(0,168,89,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.service-card-text h4 { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+.service-card-text p  { color: rgba(245,245,240,0.5); font-size: 13px; line-height: 1.5; }
+
+/* ─────────────────────────────────────────
+   2. MERCADO
+───────────────────────────────────────── */
+#mercado { background: #0d0d0d; }
+.mercado-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+.mercado-card {
+  background: var(--gris); border: 1px solid rgba(255,255,255,0.07);
+  padding: 32px; position: relative; overflow: hidden; transition: border-color .25s;
+}
+.mercado-card:hover { border-color: rgba(0,168,89,0.5); }
+.mercado-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--verde);
+}
+.mercado-card-num {
+  font-family: 'Bebas Neue'; font-size: 64px; color: rgba(0,168,89,0.08);
+  position: absolute; top: 12px; right: 20px; line-height: 1;
+}
+.mercado-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--verde-claro); }
+.mercado-card p  { color: rgba(245,245,240,0.65); font-size: 14px; line-height: 1.7; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tag {
+  padding: 4px 12px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  background: rgba(0,168,89,0.1); border: 1px solid rgba(0,168,89,0.3); color: var(--verde-claro);
+}
+.tag.red { background: rgba(232,53,42,0.1); border-color: rgba(232,53,42,0.4); color: #ff6b63; }
+.monopoly-banner {
+  margin-top: 48px;
+  background: linear-gradient(135deg, rgba(0,168,89,0.1), rgba(0,168,89,0.04));
+  border: 1px solid rgba(0,168,89,0.3); padding: 40px 48px;
+  display: flex; align-items: center; gap: 40px;
+}
+.monopoly-icon  { font-size: 60px; flex-shrink: 0; }
+.monopoly-text h3 { font-family: 'Bebas Neue'; font-size: 32px; color: var(--verde); margin-bottom: 8px; }
+.monopoly-text p  { color: rgba(245,245,240,0.65); font-size: 14px; line-height: 1.7; }
+
+/* ─────────────────────────────────────────
+   3. MICROECONOMÍA
+───────────────────────────────────────── */
+#microeconomia { background: var(--negro); }
+.micro-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 60px; }
+.micro-card {
+  background: var(--gris); border: 1px solid rgba(255,255,255,0.07);
+  padding: 32px; text-align: center; transition: all .25s;
+}
+.micro-card:hover { border-color: var(--verde); transform: translateY(-4px); }
+.micro-card-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+.micro-card h3   { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+.micro-card p    { color: rgba(245,245,240,0.55); font-size: 13px; line-height: 1.6; }
+.elasticity-bar-wrap { margin-top: 16px; }
+.e-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--gris-claro); margin-bottom: 6px; }
+.e-bar   { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.e-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--verde), var(--verde-claro)); }
+
+/* ─────────────────────────────────────────
+   4. MARKETING
+───────────────────────────────────────── */
+#marketing { background: #0d0d0d; }
+.marketing-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.marketing-col h3 { font-family: 'DM Serif Display'; font-size: 28px; font-style: italic; margin-bottom: 20px; color: var(--verde-claro); }
+.strategy-item {
+  display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.strategy-item:last-child { border-bottom: none; margin-bottom: 0; }
+.strategy-dot {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: rgba(0,168,89,0.15); border: 1px solid var(--verde);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue'; font-size: 16px; color: var(--verde);
+}
+.strategy-item-text h4 { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+.strategy-item-text p  { color: rgba(245,245,240,0.55); font-size: 13px; line-height: 1.6; }
+.price-box {
+  background: linear-gradient(135deg, rgba(0,168,89,0.12), rgba(0,168,89,0.04));
+  border: 1px solid rgba(0,168,89,0.3); padding: 32px; margin-bottom: 24px;
+}
+.price-box h4 { color: var(--verde); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+.price-tiers  { display: flex; flex-direction: column; gap: 10px; }
+.price-tier {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: rgba(255,255,255,0.04);
+}
+.price-tier-name { font-size: 13px; color: rgba(245,245,240,0.7); }
+.price-tier-val  { font-family: 'Bebas Neue'; font-size: 20px; color: var(--verde-claro); }
+
+/* ─────────────────────────────────────────
+   5. DEMO – LANDING PAGE
+───────────────────────────────────────── */
+#demo { background: var(--negro); }
+.demo-frame {
+  border: 2px solid rgba(0,168,89,0.3); border-radius: 4px; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,168,89,0.1);
+}
+.demo-browser-bar {
+  background: #1a1a1a; padding: 12px 20px;
+  display: flex; align-items: center; gap: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.browser-dots { display: flex; gap: 7px; }
+.dot   { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r { background: #FF5F57; }
+.dot-y { background: #FEBC2E; }
+.dot-g { background: #28C840; }
+.browser-url {
+  flex: 1; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+  padding: 6px 14px; font-size: 12px; color: rgba(245,245,240,0.5);
+}
+
+/* Landing interna */
+.lp-wrap { background: #fff; color: #111; font-family: 'DM Sans', sans-serif; }
+.lp-nav {
+  background: #006633; padding: 14px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.lp-nav-brand { color: #fff; font-family: 'Bebas Neue'; font-size: 26px; letter-spacing: 3px; text-decoration: none; }
+.lp-nav-links { display: flex; gap: 24px; list-style: none; }
+.lp-nav-links a {
+  color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; transition: color .2s;
+}
+.lp-nav-links a:hover { color: #FFD700; }
+.lp-nav-btn {
+  background: #FFD700; color: #006633; padding: 8px 20px;
+  font-weight: 700; font-size: 13px; border: none; cursor: pointer; transition: background .2s;
+}
+.lp-nav-btn:hover { background: #e6c200; }
+.lp-hero {
+  background: linear-gradient(135deg, #004d26, #007a40);
+  padding: 70px 40px; display: flex; gap: 40px; align-items: center;
+}
+.lp-hero-text { flex: 1; }
+.lp-hero-text h1 { font-family: 'Bebas Neue'; font-size: 54px; color: #fff; line-height: 1; margin-bottom: 16px; letter-spacing: 1px; }
+.lp-hero-text h1 em { color: #FFD700; font-style: normal; }
+.lp-hero-text p  { color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.7; margin-bottom: 28px; max-width: 420px; }
+.lp-hero-btns   { display: flex; gap: 12px; }
+.lp-btn-y {
+  background: #FFD700; color: #006633; padding: 14px 28px;
+  font-weight: 700; font-size: 14px; border: none; cursor: pointer; transition: background .2s;
+}
+.lp-btn-y:hover { background: #e6c200; }
+.lp-btn-w {
+  background: transparent; color: #fff; padding: 14px 28px;
+  font-weight: 600; font-size: 14px; border: 2px solid rgba(255,255,255,0.4); cursor: pointer; transition: border-color .2s;
+}
+.lp-btn-w:hover { border-color: #FFD700; color: #FFD700; }
+.lp-hero-card {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  padding: 28px 32px; border-radius: 4px; text-align: center; min-width: 200px;
+}
+.lp-hero-card .price      { font-family: 'Bebas Neue'; font-size: 48px; color: #FFD700; line-height: 1; }
+.lp-hero-card .price-sub  { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 4px; margin-bottom: 16px; }
+.lp-hero-card button {
+  background: #FFD700; color: #006633; padding: 10px 24px;
+  font-weight: 700; font-size: 13px; border: none; cursor: pointer; width: 100%;
+}
+.lp-features {
+  padding: 60px 40px; background: #f9f9f7;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 24px;
+}
+.lp-feat { text-align: center; padding: 24px 16px; background: #fff; border-bottom: 3px solid #006633; }
+.lp-feat-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.lp-feat h4   { font-size: 14px; font-weight: 700; color: #006633; margin-bottom: 6px; }
+.lp-feat p    { font-size: 12px; color: #555; line-height: 1.5; }
+.lp-ad-banner {
+  background: linear-gradient(90deg, #003d1f, #006633);
+  padding: 28px 40px; display: flex; justify-content: space-between; align-items: center;
+}
+.lp-ad-left h3 { color: #FFD700; font-family: 'Bebas Neue'; font-size: 30px; letter-spacing: 1px; }
+.lp-ad-left p  { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 4px; }
+.lp-ad-right   { display: flex; align-items: center; gap: 20px; }
+.lp-ad-price .big   { font-family: 'Bebas Neue'; font-size: 42px; color: #fff; line-height: 1; }
+.lp-ad-price .small { font-size: 11px; color: rgba(255,255,255,0.6); }
+.lp-ad-cta {
+  background: #FFD700; color: #006633; padding: 12px 28px;
+  font-weight: 700; font-size: 14px; border: none; cursor: pointer; white-space: nowrap;
+}
+.lp-slogan { background: #006633; padding: 24px 40px; text-align: center; }
+.lp-slogan p    { font-family: 'Bebas Neue'; font-size: 28px; color: #fff; letter-spacing: 3px; }
+.lp-slogan span { color: #FFD700; }
+.lp-plans   { padding: 60px 40px; background: #fff; }
+.lp-plans h2 { font-family: 'Bebas Neue'; font-size: 38px; color: #006633; text-align: center; margin-bottom: 32px; letter-spacing: 1px; }
+.lp-plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.plan-card { border: 1px solid #ddd; padding: 28px 24px; text-align: center; position: relative; }
+.plan-card.featured { border-color: #006633; border-width: 2px; }
+.plan-badge {
+  background: #006633; color: #fff; font-size: 11px; letter-spacing: 1px;
+  padding: 4px 12px; position: absolute; top: -12px;
+  left: 50%; transform: translateX(-50%); white-space: nowrap;
+}
+.plan-name  { font-weight: 700; font-size: 14px; color: #444; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.plan-price { font-family: 'Bebas Neue'; font-size: 44px; color: #006633; line-height: 1; }
+.plan-price sup { font-size: 20px; }
+.plan-unit  { font-size: 12px; color: #888; margin-bottom: 16px; }
+.plan-feats { list-style: none; margin-bottom: 20px; }
+.plan-feats li { font-size: 13px; color: #555; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+.plan-feats li::before { content: '✓ '; color: #006633; font-weight: 700; }
+.plan-btn { background: #006633; color: #fff; padding: 10px 28px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; width: 100%; transition: background .2s; }
+.plan-btn:hover { background: #004d26; }
+.plan-card.featured .plan-btn { background: #FFD700; color: #006633; }
+.plan-card.featured .plan-btn:hover { background: #e6c200; }
+.lp-footer { background: #003d1f; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+.lp-footer-brand { color: rgba(255,255,255,0.6); font-size: 12px; }
+.lp-footer-links { display: flex; gap: 20px; }
+.lp-footer-links a { color: rgba(255,255,255,0.5); font-size: 12px; text-decoration: none; transition: color .2s; }
+.lp-footer-links a:hover { color: #FFD700; }
+
+/* ─────────────────────────────────────────
+   CONCLUSIÓN
+───────────────────────────────────────── */
+#conclusion {
+  background: linear-gradient(135deg, #0d1f0d, #0A0A0A);
+  border-top: 1px solid rgba(0,168,89,0.2);
+  padding: 80px 60px; text-align: center;
+}
+#conclusion .section-title { margin-bottom: 40px; }
+.conclusion-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
+  max-width: 900px; margin: 0 auto 60px;
+}
+.conclusion-item { padding: 24px; background: rgba(0,168,89,0.07); border: 1px solid rgba(0,168,89,0.2); }
+.conclusion-item h4 { color: var(--verde-claro); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.conclusion-item p  { color: rgba(245,245,240,0.6); font-size: 13px; line-height: 1.6; }
+
+/* ─────────────────────────────────────────
+   FOOTER CFE LINKS
+───────────────────────────────────────── */
+.site-footer {
+  background: #060606;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-top {
+  padding: 60px 60px 40px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+}
+.footer-brand-col {}
+.footer-brand-name {
+  font-family: 'Bebas Neue'; font-size: 28px; letter-spacing: 3px;
+  color: var(--verde); display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.footer-brand-desc { color: rgba(245,245,240,0.4); font-size: 13px; line-height: 1.7; max-width: 260px; }
+.footer-social { display: flex; gap: 12px; margin-top: 20px; }
+.social-btn {
+  width: 36px; height: 36px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center;
+  justify-content: center; font-size: 16px; text-decoration: none;
+  transition: background .2s, border-color .2s;
+}
+.social-btn:hover { background: rgba(0,168,89,0.2); border-color: var(--verde); }
+.footer-col h5 {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--verde); margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a {
+  color: rgba(245,245,240,0.45); font-size: 13px; text-decoration: none;
+  transition: color .2s; display: flex; align-items: center; gap: 6px;
+}
+.footer-col ul li a::before { content: '→'; opacity: 0; transition: opacity .2s, transform .2s; transform: translateX(-6px); font-size: 11px; color: var(--verde); }
+.footer-col ul li a:hover { color: var(--blanco); }
+.footer-col ul li a:hover::before { opacity: 1; transform: translateX(0); }
+.footer-bottom {
+  padding: 20px 60px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-bottom p { color: rgba(245,245,240,0.25); font-size: 12px; }
+.footer-tag { color: var(--verde); font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 2px; }
+
+/* ─────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--negro); }
+::-webkit-scrollbar-thumb { background: var(--verde-oscuro); border-radius: 3px; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 900px) {
+  nav { padding: 12px 24px; }
+  .nav-links { display: none; }
+  #hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+  .hero-right { display: none; }
+  section { padding: 70px 24px; }
+  .stats-banner { padding: 24px; }
+  .producto-grid,
+  .marketing-cols,
+  .micro-grid,
+  .mercado-grid { grid-template-columns: 1fr; }
+  .lp-hero { flex-direction: column; padding: 40px 24px; }
+  .lp-features { grid-template-columns: repeat(2,1fr); }
+  .lp-plans-grid { grid-template-columns: 1fr; }
+  .conclusion-grid { grid-template-columns: 1fr; }
+  .monopoly-banner { flex-direction: column; text-align: center; }
+  .footer-top { grid-template-columns: 1fr; padding: 40px 24px 24px; }
+  .footer-bottom { padding: 16px 24px; flex-direction: column; text-align: center; }
+}

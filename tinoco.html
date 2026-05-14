@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFE — Light for Mexico</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root {
+    --verde: #00A859;
+    --verde-dark: #007A40;
+    --verde-neon: #00FF88;
+    --negro: #0A0A0A;
+    --gris-oscuro: #111111;
+    --gris: #1E1E1E;
+    --blanco: #F5F5F0;
+    --amarillo: #FFD600;
+    --rojo: #E63946;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--negro); color: var(--blanco); font-family: 'IBM Plex Sans', sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,168,89,0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: var(--verde); }
+  .cfe-badge { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; background: var(--verde); border-radius: 12px; color: #000; font-weight: 800; letter-spacing: 0.5px; font-size: 12px; text-transform: uppercase; }
+  .logo-bolt { width: 32px; height: 32px; background: var(--verde); clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 40% 100%, 60% 55%, 30% 55%); animation: pulse-bolt 2s infinite; }
+  @keyframes pulse-bolt { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links .nav-link { color: rgba(245,245,240,0.8); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links .nav-link:hover { color: var(--verde-neon); }
+  .navbar-toggler { border-color: rgba(255,255,255,0.2); background: transparent; }
+  .navbar-toggler-icon { position: relative; width: 24px; height: 2px; background: var(--blanco); display: inline-block; }
+  .navbar-toggler-icon::before, .navbar-toggler-icon::after { content: ''; position: absolute; width: 24px; height: 2px; background: var(--blanco); left: 0; }
+  .navbar-toggler-icon::before { top: -7px; }
+  .navbar-toggler-icon::after { top: 7px; }
+
+  @media (max-width: 992px) {
+    nav { padding: 14px 18px; }
+    .navbar-collapse { background: rgba(10,10,10,0.96); border-top: 1px solid rgba(0,168,89,0.15); }
+    .nav-links { flex-direction: column; gap: 14px; padding: 18px 0; }
+    .nav-links .nav-link { font-size: 14px; }
+    .navbar-collapse.collapse { display: none !important; }
+    .navbar-collapse.collapse.show { display: block !important; }
+    .ticker { margin-top: 110px; }
+  }
+
+  .ticker { background: var(--verde); color: #000; padding: 10px 0; overflow: hidden; white-space: nowrap; margin-top: 64px; }
+  .ticker-inner { display: inline-block; animation: ticker 35s linear infinite; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 2px; }
+  @keyframes ticker { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 48px 80px; position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,168,89,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,168,89,0.06) 1px, transparent 1px);
+    background-size: 60px 60px; animation: grid-move 20s linear infinite;
+  }
+  @keyframes grid-move { from{transform:translateY(0)} to{transform:translateY(60px)} }
+  .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,168,89,0.15) 0%, transparent 70%); top: -100px; right: -100px; animation: glow-pulse 4s ease-in-out infinite; }
+  @keyframes glow-pulse { 0%,100%{transform:scale(1);opacity:0.8} 50%{transform:scale(1.1);opacity:1} }
+
+  .hero-tag { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 4px; color: var(--verde); text-transform: uppercase; margin-bottom: 24px; opacity:0; animation: fade-up 0.8s 0.2s forwards; position:relative; z-index:1; }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 12vw, 160px); line-height: 0.9; letter-spacing: -2px; margin-bottom: 32px; opacity:0; animation: fade-up 0.8s 0.4s forwards; position:relative; z-index:1; }
+  .hero-title span { color: var(--verde); display: block; }
+  .hero-subtitle { font-size: 18px; color: rgba(245,245,240,0.65); max-width: 560px; line-height: 1.7; margin-bottom: 48px; font-weight: 300; opacity:0; animation: fade-up 0.8s 0.6s forwards; position:relative; z-index:1; }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; opacity:0; animation: fade-up 0.8s 0.8s forwards; position:relative; z-index:1; }
+  @keyframes fade-up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  .btn-primary { background: var(--verde); color: #000; padding: 16px 36px; font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); position: relative; overflow: hidden; }
+  .btn-primary::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+  .btn-primary:hover { background: var(--verde-neon); transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 25px rgba(0,255,136,0.3); }
+  .btn-primary:hover::before { width: 300px; height: 300px; }
+  .btn-outline { background: transparent; color: var(--blanco); padding: 16px 36px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border: 1px solid rgba(245,245,240,0.3); cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+  .btn-outline::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--verde); z-index: -1; transition: left 0.3s; }
+  .btn-outline:hover { border-color: var(--verde); color: #000; transform: translateY(-2px); }
+  .btn-outline:hover::after { left: 0; }
+
+  .hero-stats { display: flex; gap: 48px; margin-top: 80px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; opacity:0; animation: fade-up 0.8s 1s forwards; position:relative; z-index:1; }
+  .stat-number { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--verde); line-height: 1; }
+  .stat-label { font-size: 12px; color: rgba(245,245,240,0.4); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+  section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--verde); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--verde); }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 72px); letter-spacing: 1px; line-height: 1; margin-bottom: 48px; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; background: rgba(0,168,89,0.1); border: 1px solid rgba(0,168,89,0.15); }
+  .card { background: var(--gris-oscuro); padding: 40px 32px; transition: all 0.3s ease; border: 1px solid rgba(0,168,89,0.2); position: relative; cursor: pointer; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent); transition: left 0.5s; }
+  .card:hover::before { left: 100%; }
+  .card:hover { background: var(--gris); border-color: var(--verde); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,168,89,0.15); }
+  .card-icon { font-size: 36px; margin-bottom: 20px; transition: transform 0.3s; }
+  .card:hover .card-icon { transform: scale(1.2) rotate(10deg); }
+  .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 12px; transition: color 0.3s; }
+  .card:hover .card-title { color: var(--verde-neon); }
+  .card-text { font-size: 14px; color: rgba(245,245,240,0.55); line-height: 1.8; }
+  .card-tag { display: inline-block; margin-top: 20px; padding: 6px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--verde); color: var(--verde); transition: all 0.3s; }
+  .card:hover .card-tag { background: var(--verde); color: #000; }
+
+  .market-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .market-visual { background: var(--gris); padding: 40px; border-left: 4px solid var(--verde); }
+  .market-visual h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin-bottom: 24px; color: var(--verde); }
+  .market-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14px; transition: all 0.3s; cursor: pointer; }
+  .market-row:hover { background: rgba(0,168,89,0.05); padding-left: 12px; padding-right: 12px; margin-left: -12px; margin-right: -12px; }
+  .market-row:last-child { border-bottom: none; }
+  .market-key { color: rgba(245,245,240,0.5); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; transition: color 0.3s; }
+  .market-row:hover .market-key { color: var(--verde-neon); }
+  .market-val { font-weight: 600; transition: all 0.3s; }
+  .market-val.danger { color: var(--rojo); }
+  .market-val.danger:hover { text-shadow: 0 0 10px var(--rojo); }
+  .market-val.warning { color: var(--amarillo); }
+  .market-val.warning:hover { text-shadow: 0 0 10px var(--amarillo); }
+  .market-val.good { color: var(--verde); }
+  .market-val.good:hover { text-shadow: 0 0 10px var(--verde); }
+  .bar-track { height: 8px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 8px; border-radius: 4px; transition: all 0.3s; cursor: pointer; }
+  .bar-track:hover { background: rgba(255,255,255,0.15); height: 10px; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--verde), var(--verde-neon)); animation: bar-grow 1.5s 0.5s ease-out both; border-radius: 4px; transition: all 0.3s; }
+  .bar-track:hover .bar-fill { filter: brightness(1.2); box-shadow: 0 0 15px rgba(0,255,136,0.4); }
+  @keyframes bar-grow { from{width:0%!important} }
+  .power-label { display: flex; justify-content: space-between; font-size: 12px; color: rgba(245,245,240,0.5); margin-bottom: 6px; margin-top: 20px; }
+  .market-text-col { display: flex; flex-direction: column; gap: 24px; }
+  .feature-block { padding: 24px; background: rgba(0,168,89,0.04); border: 1px solid rgba(0,168,89,0.12); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
+  .feature-block::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--verde), var(--verde-neon)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+  .feature-block:hover { background: rgba(0,168,89,0.08); border-color: var(--verde); box-shadow: 0 10px 30px rgba(0,168,89,0.1); }
+  .feature-block:hover::after { transform: scaleX(1); }
+  .feature-block h4 { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--verde); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; transition: color 0.3s; }
+  .feature-block:hover h4 { color: var(--verde-neon); }
+  .feature-block p { font-size: 14px; color: rgba(245,245,240,0.6); line-height: 1.8; transition: color 0.3s; }
+  .feature-block:hover p { color: rgba(245,245,240,0.8); }
+
+  .analysis-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: rgba(0,168,89,0.08); }
+  .analysis-cell { background: var(--gris-oscuro); padding: 40px 32px; border: 1px solid rgba(0,168,89,0.08); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
+  .analysis-cell::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0,168,89,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; }
+  .analysis-cell:hover { border-color: var(--verde); box-shadow: 0 15px 40px rgba(0,168,89,0.15); transform: translateY(-6px); }
+  .analysis-cell:hover::before { opacity: 1; }
+  .analysis-cell h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--verde); margin-bottom: 16px; transition: all 0.3s; }
+  .analysis-cell:hover h3 { color: var(--verde-neon); transform: translateX(8px); }
+  .analysis-cell p { font-size: 14px; color: rgba(245,245,240,0.6); line-height: 1.9; transition: color 0.3s; }
+  .analysis-cell:hover p { color: rgba(245,245,240,0.8); }
+  .badge { display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; background: rgba(0,168,89,0.15); border: 1px solid var(--verde); color: var(--verde); margin-bottom: 16px; }
+
+  .pricing-hero { text-align: center; padding: 80px 48px; background: var(--gris-oscuro); border: 1px solid rgba(0,168,89,0.2); position: relative; overflow: hidden; max-width: 1200px; margin: 0 auto; }
+  .pricing-hero::before { content: 'CFE'; position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 300px; color: rgba(0,168,89,0.04); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; letter-spacing: -10px; }
+  .pricing-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; background: rgba(0,168,89,0.1); }
+  .tier { background: var(--gris-oscuro); padding: 32px 24px; text-align: left; transition: all 0.3s ease; position: relative; overflow: hidden; cursor: pointer; }
+  .tier::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--verde), var(--verde-neon)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .tier:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,168,89,0.2); }
+  .tier:hover::before { transform: scaleX(1); }
+  .tier-name { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--verde); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; transition: color 0.3s; }
+  .tier:hover .tier-name { color: var(--verde-neon); }
+  .tier-kwh { font-family: 'Bebas Neue', sans-serif; font-size: 32px; margin-bottom: 4px; transition: transform 0.3s; }
+  .tier:hover .tier-kwh { transform: scale(1.1); }
+  .tier-price { font-size: 13px; color: rgba(245,245,240,0.4); transition: color 0.3s; }
+  .tier:hover .tier-price { color: var(--verde-neon); font-weight: 600; }
+
+  .ads-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2px; background: rgba(0,168,89,0.1); }
+  .ad-banner { background: linear-gradient(135deg, #0A2A1A 0%, #0D3D22 50%, #0A2A1A 100%); padding: 60px 48px; position: relative; overflow: hidden; border: 1px solid rgba(0,168,89,0.2); transition: all 0.3s; cursor: pointer; }
+  .ad-banner::before { content: '⚡'; position: absolute; font-size: 200px; right: -20px; bottom: -40px; opacity: 0.06; transition: all 0.3s; }
+  .ad-banner:hover { border-color: var(--verde); box-shadow: 0 20px 50px rgba(0,168,89,0.15); }
+  .ad-banner:hover::before { opacity: 0.12; transform: rotate(20deg) scale(1.1); }
+  .ad-slogan { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 64px); line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+  .ad-banner:hover .ad-slogan { color: var(--verde-neon); }
+  .ad-slogan em { color: var(--verde-neon); font-style: normal; transition: all 0.3s; }
+  .ad-banner:hover .ad-slogan em { text-shadow: 0 0 20px var(--verde-neon); }
+  .ad-body { font-size: 15px; color: rgba(245,245,240,0.6); max-width: 380px; line-height: 1.7; margin-bottom: 32px; transition: color 0.3s; }
+  .ad-banner:hover .ad-body { color: rgba(245,245,240,0.8); }
+  .ad-side { display: flex; flex-direction: column; gap: 2px; }
+  .ad-mini { background: var(--gris-oscuro); padding: 32px; flex: 1; display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(0,168,89,0.1); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
+  .ad-mini::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,168,89,0.2) 0%, transparent 70%); opacity: 0; transition: all 0.4s; }
+  .ad-mini:hover { transform: translateY(-6px); border-color: var(--verde); box-shadow: 0 15px 35px rgba(0,168,89,0.15); }
+  .ad-mini:hover::before { opacity: 1; right: 10%; top: 10%; }
+  .ad-mini-icon { font-size: 32px; margin-bottom: 12px; transition: transform 0.3s; }
+  .ad-mini:hover .ad-mini-icon { transform: scale(1.3) rotate(-10deg); }
+  .ad-mini h4 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin-bottom: 8px; color: var(--verde); transition: all 0.3s; }
+  .ad-mini:hover h4 { color: var(--verde-neon); transform: translateX(4px); }
+  .ad-mini p { font-size: 12px; color: rgba(245,245,240,0.4); line-height: 1.6; transition: color 0.3s; }
+  .ad-mini:hover p { color: rgba(245,245,240,0.7); }
+
+  .mktg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(0,168,89,0.08); margin-bottom: 48px; }
+  .mktg-cell { background: var(--gris-oscuro); padding: 36px 28px; border: 1px solid rgba(0,168,89,0.1); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; position: relative; }
+  .mktg-cell::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,255,136,0.1) 0%, transparent 100%); opacity: 0; transition: opacity 0.3s; }
+  .mktg-cell:hover { transform: translateY(-12px) scale(1.02); border-color: var(--verde); box-shadow: 0 20px 50px rgba(0,168,89,0.2); }
+  .mktg-cell:hover::before { opacity: 1; }
+  .mktg-cell h4 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--verde); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; transition: color 0.3s; position: relative; z-index: 1; }
+  .mktg-cell:hover h4 { color: var(--verde-neon); }
+  .mktg-cell p { font-size: 14px; color: rgba(245,245,240,0.6); line-height: 1.8; transition: color 0.3s; position: relative; z-index: 1; }
+  .mktg-cell:hover p { color: rgba(245,245,240,0.8); }
+
+  footer { background: var(--gris-oscuro); border-top: 1px solid rgba(0,168,89,0.15); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: var(--verde); }
+
+  @media(max-width:768px){
+    nav{padding:16px 24px;}
+    .navbar-collapse:not(.show) .nav-links{display:none;}
+    section{padding:60px 24px;} .hero{padding:100px 24px 60px;}
+    .market-layout,.ads-grid,.pricing-tiers,.analysis-grid,.mktg-grid{grid-template-columns:1fr;}
+    footer{flex-direction:column;text-align:center;}
+  }
+
+  /* Animaciones scroll reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* Efecto brillo animado */
+  @keyframes shimmer { 0%{background-position: -1000px 0} 100%{background-position: 1000px 0} }
+  .shimmer { background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent); background-size: 1000px 100%; animation: shimmer 2s infinite; }
+
+  /* Efectos de interactividad mejorada */
+  .stat-number { animation: count-up 2s ease-out 1.2s both; }
+  @keyframes count-up { from{opacity:0;transform:scale(0.5)} to{opacity:1;transform:scale(1)} }
+
+  /* Tooltip */
+  .tooltip { position: relative; }
+  .tooltip:hover::after { content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: var(--verde); color: #000; padding: 8px 12px; border-radius: 4px; font-size: 12px; white-space: nowrap; z-index: 1000; font-weight: 600; }
+  .tooltip::before { content: ''; position: absolute; bottom: 115%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--verde); opacity: 0; }
+  .tooltip:hover::before { opacity: 1; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-expand-lg">
+  <div class="container-fluid">
+    <div class="nav-logo">
+      <div class="cfe-badge">CFE</div>
+      <div class="logo-bolt"></div>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="nav-links navbar-nav align-items-center">
+        <li class="nav-item"><a class="nav-link" href="#producto">Service</a></li>
+        <li class="nav-item"><a class="nav-link" href="#mercado">Market</a></li>
+        <li class="nav-item"><a class="nav-link" href="#micro">Analysis</a></li>
+        <li class="nav-item"><a class="nav-link" href="#marketing">Marketing</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tarifas">Rates</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="ticker">
+  <span class="ticker-inner">⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp; MONOPOLIO NATURAL DE ENERGÍA EN MÉXICO &nbsp;&nbsp;&nbsp; 45.3 MILLONES DE CLIENTES &nbsp;&nbsp;&nbsp; 70% GENERACIÓN ELÉCTRICA NACIONAL &nbsp;&nbsp;&nbsp; EMPRESA PRODUCTIVA DEL ESTADO &nbsp;&nbsp;&nbsp; FUNDADA EN 1937 &nbsp;&nbsp;&nbsp; ⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp; MONOPOLIO NATURAL DE ENERGÍA EN MÉXICO &nbsp;&nbsp;&nbsp; 45.3 MILLONES DE CLIENTES &nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">// Microeconomic Analysis · Natural Monopoly</div>
+  <h1 class="hero-title">LIGHT FOR<br><span>ALL MEXICO</span></h1>
+  <p class="hero-subtitle">The Federal Commission of Electricity is the largest company in Latin America in its sector: the sole provider of electrical energy on a national scale, with infrastructure that no competitor can replicate.</p>
+  <div class="hero-ctas">
+    <button class="btn-primary" onclick="document.getElementById('tarifas').scrollIntoView({behavior:'smooth'})">View Rates</button>
+    <button class="btn-outline" onclick="document.getElementById('mercado').scrollIntoView({behavior:'smooth'})">Market Analysis</button>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-number">1</div><div class="stat-label">Company in Market</div></div>
+    <div><div class="stat-number">45.3M</div><div class="stat-label">Active Users</div></div>
+    <div><div class="stat-number">87</div><div class="stat-label">Years in Operation</div></div>
+    <div><div class="stat-number">100%</div><div class="stat-label">Pricing Power</div></div>
+  </div>
+</div>
+
+<!-- 1. PRODUCT -->
+<section id="producto">
+  <div class="section-label">01 — Product or Service</div>
+  <h2 class="section-title">WHAT DOES CFE SELL?</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Electrical Energy</div>
+      <p class="card-text">Generation, transmission and distribution of electricity to homes, industries, commerce and government throughout the national territory. The product is identical for all: standard electricity at 127V/60Hz.</p>
+      <span class="card-tag">Homogeneous Good</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏠</div>
+      <div class="card-title">Target Market</div>
+      <p class="card-text">The entire Mexican population. There is no segmentation by choice: any person who needs electricity must contract with CFE. From rural households to large industrial plants.</p>
+      <span class="card-tag">Captive Market</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Value Proposition</div>
+      <p class="card-text">The customer does not choose CFE because it is "better" — they choose it because it is the only option. The value proposition is access to electricity, an essential good with no practical substitute in modern life.</p>
+      <span class="card-tag">No Competition</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2. MARKET STRUCTURE -->
+<section id="mercado">
+  <div class="section-label">02 — Market Structure</div>
+  <h2 class="section-title">NATURAL MONOPOLY</h2>
+  <div class="market-layout">
+    <div class="market-visual">
+      <h3>Market Diagnosis</h3>
+      <div class="market-row"><span class="market-key">Number of Companies</span><span class="market-val danger">1 (monopoly)</span></div>
+      <div class="market-row"><span class="market-key">Product Type</span><span class="market-val">Homogeneous</span></div>
+      <div class="market-row"><span class="market-key">Barriers to Entry</span><span class="market-val danger">Extremely High</span></div>
+      <div class="market-row"><span class="market-key">Pricing Power</span><span class="market-val danger">Absolute (price maker)</span></div>
+      <div class="market-row"><span class="market-key">Regulation</span><span class="market-val warning">Government-Regulated Rates</span></div>
+      <div class="market-row"><span class="market-key">Monopoly Type</span><span class="market-val good">Natural + Legal</span></div>
+      <div class="power-label"><span>Market Share</span><span>~70%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+      <div class="power-label"><span>Price Setting Power</span><span>High</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+      <div class="power-label"><span>Entry Barriers</span><span>Very High</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+    </div>
+    <div class="market-text-col">
+      <div class="feature-block">
+        <h4>Why is it a natural monopoly?</h4>
+        <p>Building a national electrical grid requires billions of pesos in infrastructure. It is economically unfeasible for more than one company to build parallel networks — the fixed costs are so high that a single company can serve the entire market more cheaply than two.</p>
+      </div>
+      <div class="feature-block">
+        <h4>Barriers to Entry</h4>
+        <p>1) Massive capital required (irreplicable infrastructure)<br>2) Legal framework: CFE is a State company with exclusive concession<br>3) Economies of scale impossible to match<br>4) Distribution network covering 99.7% of national territory</p>
+      </div>
+      <div class="feature-block">
+        <h4>Degree of Pricing Power</h4>
+        <p>CFE is a <em style="color:var(--verde)">price maker</em>: it sets the rates. The government regulates them to protect consumers, since without regulation CFE could charge prices well above marginal cost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PUBLIC UTILITY MONOPOLY -->
+<section id="public-utility">
+  <div class="section-label">03 — Public Utility Monopoly</div>
+  <h2 class="section-title">Why is this a Public Utility Monopoly?</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">Public Utility Monopoly</div>
+      <p class="card-text">Electricity is an essential good whose provision through a single network operator is more efficient than duplicating infrastructure. The state maintains control of transmission and distribution networks to guarantee universal access, affordable prices, and national energy security.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Efficient Infrastructure</div>
+      <p class="card-text">This is the classic case of a regulated natural monopoly: having a single provider minimizes infrastructure costs, while regulation prevents abuse of dominant position.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. MICROECONOMIC ANALYSIS -->
+<section id="micro">
+  <div class="section-label">03 — Microeconomic Analysis</div>
+  <h2 class="section-title">DEMAND & CONSUMER BEHAVIOR</h2>
+  <div class="analysis-grid">
+    <div class="analysis-cell">
+      <div class="badge">Price Elasticity</div>
+      <h3>INELASTIC DEMAND</h3>
+      <p>Electricity is a basic necessity: even if the price rises, consumers cannot easily reduce their consumption or switch providers. Price elasticity is close to 0 in the short term. A 10% increase in rates does not reduce consumption proportionally — people still need light and refrigeration.</p>
+    </div>
+    <div class="analysis-cell">
+      <div class="badge">Competition Level</div>
+      <h3>COMPETITION: NONE</h3>
+      <p>In the residential segment, there is no competition. Since the 2014 energy reform, private companies can generate electricity, but distribution and commercialization to end users remains exclusive to CFE. There is no competitive pressure to lower prices or improve quality.</p>
+    </div>
+    <div class="analysis-cell">
+      <div class="badge">Consumer Behavior</div>
+      <h3>CAPTIVE CONSUMER</h3>
+      <p>The consumer does not maximize utility by choosing between providers — there is no choice. The only decision is how much to consume at the regulated price. There is no search for alternatives or brand comparison. The only way out is to generate their own energy (solar panels), an expensive alternative accessible only to some.</p>
+    </div>
+    <div class="analysis-cell">
+      <div class="badge">Demand Conditions</div>
+      <h3>STABLE AND GROWING DEMAND</h3>
+      <p>Electricity demand grows with population and economic development. It does not depend on trends or fashions. It is predictable, constant and essential. Factors like climate generate seasonal peaks, but base demand never drops to zero — this gives CFE an extremely stable revenue stream.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. MARKETING -->
+<section id="marketing">
+  <div class="section-label">04 — Marketing Strategy</div>
+  <h2 class="section-title">POSITIONING</h2>
+  <div class="mktg-grid">
+    <div class="mktg-cell">
+      <h4>Pricing Strategy</h4>
+      <p>CFE does not compete on price — it sets it. Rates are regulated by the government and differentiated by user type: residential, high-consumption residential (DAC), commercial and industrial. Subsidies to the residential sector allow low prices that reinforce service dependence.</p>
+    </div>
+    <div class="mktg-cell">
+      <h4>Promotion</h4>
+      <p>Being a monopoly, CFE does not need advertising to attract customers. Its marketing focuses on institutional image and sustainability (CFE Green, clean energy). The most powerful contact point is the bimonthly bill — it reaches 100% of its market at no advertising cost.</p>
+    </div>
+    <div class="mktg-cell">
+      <h4>Positioning</h4>
+      <p>CFE positions itself as a strategic national company, pride of Mexico. It does not seek to be "preferred" — it seeks to be perceived as reliable and essential. It reinforces its image with the energy sovereignty narrative: "energy belongs to Mexicans".</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. DEMO / EXECUTION -->
+<div id="tarifas" style="background:var(--gris-oscuro); border-top:1px solid rgba(0,168,89,0.15); border-bottom:1px solid rgba(0,168,89,0.15);">
+  <div class="pricing-hero">
+    <div class="section-label" style="justify-content:center; margin-bottom:24px;">05 — Marketing Execution (Demo)</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,6vw,72px); margin-bottom:8px; position:relative; z-index:1;">CFE 2024 RATES</h2>
+    <p style="font-size:13px; font-family:'IBM Plex Mono',monospace; color:var(--verde); letter-spacing:3px; margin-bottom:40px; position:relative; z-index:1;">RESIDENTIAL DOMESTIC RATE</p>
+    <div class="pricing-tiers" style="position:relative; z-index:1;">
+      <div class="tier">
+        <div class="tier-name">Rate 1 · Basic</div>
+        <div class="tier-kwh">0–75 kWh</div>
+        <div class="tier-price">$0.793 per kWh — subsidized</div>
+      </div>
+      <div class="tier" style="border:1px solid var(--verde);">
+        <div class="tier-name" style="color:var(--amarillo);">Rate 1 · Standard</div>
+        <div class="tier-kwh">76–140 kWh</div>
+        <div class="tier-price">$0.958 per kWh — standard</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name" style="color:var(--rojo);">DAC Rate</div>
+        <div class="tier-kwh">+250 kWh/month</div>
+        <div class="tier-price">$4.797 per kWh — no subsidy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADS DEMO -->
+  <div style="max-width:1200px; margin:0 auto; padding:48px;">
+    <div class="section-label" style="margin-bottom:32px;">Simulated Ads</div>
+    <div class="ads-grid">
+      <div class="ad-banner">
+        <div class="ad-slogan">ENERGY FOR<br><em>EVERYONE</em><br>FOR ALL.</div>
+        <p class="ad-body">CFE brings electricity to every corner of Mexico. 99.7% national coverage. Because light is not a luxury — it is a right.</p>
+        <button class="btn-primary" onclick="window.open('https://www.cfe.mx', '_blank')">Check Your Bill Online</button>
+      </div>
+      <div class="ad-side">
+        <div class="ad-mini">
+          <div class="ad-mini-icon">☀️</div>
+          <h4>CFE Green</h4>
+          <p>Solar panels with CFE financing. Generate your own energy and sell the surplus to the grid.</p>
+        </div>
+        <div class="ad-mini">
+          <div class="ad-mini-icon">📱</div>
+          <h4>CFE With You App</h4>
+          <p>Pay your bill, report outages and check your consumption from your phone. Available 24/7.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">⚡ CFE</div>
+  <div style="font-size:12px; color:rgba(245,245,240,0.3); font-family:'IBM Plex Mono',monospace;">FEDERAL COMMISSION OF ELECTRICITY · STATE-OWNED PRODUCTIVE ENTERPRISE · MEXICO</div>
+  <div style="font-size:11px; color:rgba(245,245,240,0.2); font-family:'IBM Plex Mono',monospace;">Microeconomic Analysis · Natural Monopoly · 2024</div>
+</footer>
+
+<script>
+  // Scroll Reveal - Anima elementos cuando entran en la vista
+  const revealElements = document.querySelectorAll('section, .analysis-grid, .pricing-tiers');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal', 'active');
+      }
+    });
+  }, { threshold: 0.1 });
+  revealElements.forEach(el => observer.observe(el));
+
+  // Contador animado para estadísticas
+  function animateCounters() {
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+      const text = stat.textContent;
+      const isPercentage = text.includes('%');
+      const isM = text.includes('M');
+      
+      let finalValue;
+      if (isPercentage) finalValue = parseInt(text);
+      else if (isM) finalValue = parseFloat(text);
+      else finalValue = parseInt(text);
+
+      let currentValue = 0;
+      const increment = finalValue / 30;
+      
+      const counter = setInterval(() => {
+        currentValue += increment;
+        if (isPercentage) stat.textContent = Math.round(currentValue) + '%';
+        else if (isM) stat.textContent = currentValue.toFixed(1) + 'M';
+        else stat.textContent = Math.round(currentValue);
+
+        if (currentValue >= finalValue) {
+          clearInterval(counter);
+          stat.textContent = text;
+        }
+      }, 30);
+    });
+  }
+
+  // Activar contador cuando se vea la sección hero
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounters();
+        heroObserver.unobserve(entry.target);
+      }
+    });
+  });
+  heroObserver.observe(document.querySelector('.hero-stats'));
+
+  // Efecto parallax suave en grilla de fondo
+  document.addEventListener('mousemove', (e) => {
+    const grid = document.querySelector('.hero-grid');
+    if (grid) {
+      const x = (e.clientX / window.innerWidth) * 20;
+      const y = (e.clientY / window.innerHeight) * 20;
+      grid.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+
+  // Interactividad en tarjetas - sonido visual
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.style.animation = 'pulse 0.3s ease';
+    });
+  });
+
+  // Agregar tooltip a elementos con atributo data-tooltip
+  document.querySelectorAll('[data-tooltip]').forEach(el => {
+    el.classList.add('tooltip');
+  });
+
+  // Efecto de clic en botones - ripple
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const ripple = document.createElement('span');
+      ripple.style.position = 'absolute';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.style.width = '0';
+      ripple.style.height = '0';
+      ripple.style.borderRadius = '50%';
+      ripple.style.backgroundColor = 'rgba(255,255,255,0.5)';
+      ripple.style.pointerEvents = 'none';
+      ripple.style.animation = 'ripple-animation 0.6s ease-out';
+      
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(ripple);
+      
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+
+  // Animación ripple CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes ripple-animation {
+      to {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+      }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Efecto de desvanecimiento en navegación al hacer scroll
+  let lastScrollTop = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset;
+    if (scrollTop > 100) {
+      nav.style.borderBottomColor = 'rgba(0,168,89,0.5)';
+      nav.style.boxShadow = '0 4px 20px rgba(0,168,89,0.1)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(0,168,89,0.2)';
+      nav.style.boxShadow = 'none';
+    }
+    lastScrollTop = scrollTop;
+  });
+
+  // Efecto hover en tablas - subrayado dinámico
+  document.querySelectorAll('.market-row').forEach((row, index) => {
+    row.style.transition = `all 0.3s ease ${index * 50}ms`;
+  });
+
+  // Mobile menu fallback for the nav toggler
+  const menuToggle = document.querySelector('.navbar-toggler');
+  const navMenu = document.getElementById('navMenu');
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', String(!expanded));
+    });
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+     
