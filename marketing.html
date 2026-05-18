@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFE — Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root {
+    --verde: #00A859;
+    --verde-dark: #007A40;
+    --verde-neon: #00FF88;
+    --negro: #0A0A0A;
+    --gris-oscuro: #111111;
+    --gris: #1E1E1E;
+    --blanco: #F5F5F0;
+    --amarillo: #FFD600;
+    --rojo: #E63946;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--negro); color: var(--blanco); font-family: 'IBM Plex Sans', sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,168,89,0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: var(--verde); }
+  .cfe-badge {
+     display: inline-flex; align-items: center; justify-content: center; width: 130px; height: 46px; background-image: url(CFElogo.png); background-size: contain; background-repeat: no-repeat;
+    }  .logo-bolt { width: 32px; height: 32px; background: var(--verde); clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 40% 100%, 60% 55%, 30% 55%); animation: pulse-bolt 2s infinite; }
+  @keyframes pulse-bolt { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links .nav-link { color: rgba(245,245,240,0.8); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links .nav-link:hover { color: var(--verde-neon); }
+  .navbar-toggler { border-color: rgba(255,255,255,0.2); background: transparent; }
+  .navbar-toggler-icon { position: relative; width: 24px; height: 2px; background: var(--blanco); display: inline-block; }
+  .navbar-toggler-icon::before, .navbar-toggler-icon::after { content: ''; position: absolute; width: 24px; height: 2px; background: var(--blanco); left: 0; }
+  .navbar-toggler-icon::before { top: -7px; }
+  .navbar-toggler-icon::after { top: 7px; }
+
+  @media (max-width: 992px) {
+    nav { padding: 14px 18px; }
+    .navbar-collapse { background: rgba(10,10,10,0.96); border-top: 1px solid rgba(0,168,89,0.15); transition: all 0.3s ease; max-height: 0; overflow: hidden; }
+    .navbar-collapse.show { max-height: 300px; }
+    .nav-links { flex-direction: column; gap: 14px; padding: 18px 0; }
+    .nav-links .nav-link { font-size: 14px; }
+  }
+
+  .ticker { background: var(--verde); color: #000; padding: 10px 0; overflow: hidden; white-space: nowrap; margin-top: 64px; }
+  .ticker-inner { display: inline-block; animation: ticker 35s linear infinite; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 2px; }
+  @keyframes ticker { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
+
+  section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--verde); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--verde); }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 72px); letter-spacing: 1px; line-height: 1; margin-bottom: 48px; }
+
+  .mktg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(0,168,89,0.08); margin-bottom: 48px; }
+  .mktg-cell { background: var(--gris-oscuro); padding: 36px 28px; border: 1px solid rgba(0,168,89,0.1); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; position: relative; opacity: 0; transform: translateY(30px); animation: mktg-fade-in 0.7s ease forwards; }
+  .mktg-cell:nth-child(1) { animation-delay: 0.15s; }
+  .mktg-cell:nth-child(2) { animation-delay: 0.25s; }
+  .mktg-cell:nth-child(3) { animation-delay: 0.35s; }
+  .mktg-cell::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,255,136,0.1) 0%, transparent 100%); opacity: 0; transition: opacity 0.3s; }
+  .mktg-cell:hover { transform: translateY(-12px) scale(1.02); border-color: var(--verde); box-shadow: 0 20px 50px rgba(0,168,89,0.2); }
+  .mktg-cell:hover::before { opacity: 1; }
+  .mktg-cell h4 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--verde); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; transition: color 0.3s; position: relative; z-index: 1; }
+  .mktg-cell:hover h4 { color: var(--verde-neon); }
+  .mktg-cell p { font-size: 14px; color: rgba(245,245,240,0.6); line-height: 1.8; transition: color 0.35s ease, transform 0.35s ease; position: relative; z-index: 1; padding-bottom: 8px; }
+  .mktg-cell:hover p { color: rgba(245,245,240,0.8); transform: translateY(-2px); }
+  .highlight { color: var(--verde-neon); font-weight: 700; position: relative; }
+  .highlight::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: var(--verde-neon); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+  .mktg-cell:hover .highlight::after { transform: scaleX(1); }
+
+  footer { background: var(--gris-oscuro); border-top: 1px solid rgba(0,168,89,0.15); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: var(--verde); }
+
+  @media(max-width:768px){
+    nav{padding:16px 24px;}
+    section{padding:60px 24px;}
+    .mktg-grid { grid-template-columns: 1fr; }
+    footer{flex-direction:column;text-align:center;}
+  }
+
+  @keyframes mktg-fade-in { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  .CFEbutton{
+    height: 46px;
+    width: 130px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-expand-lg">
+  <div class="container-fluid">
+    <div class="nav-logo">
+      <div class="cfe-badge"><a class="nav-link" href="tinoco.html"><button class="CFEbutton"></button></a></div>
+      <div class="logo-bolt"></div>
+    </div>
+    <button class="navbar-toggler" type="button" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="nav-links navbar-nav align-items-center">
+        <li class="nav-item"><a class="nav-link" href="service.html">Service</a></li>
+        <li class="nav-item"><a class="nav-link" href="market.html">Market</a></li>
+        <li class="nav-item"><a class="nav-link" href="analysis.html">Analysis</a></li>
+        <li class="nav-item"><a class="nav-link" href="marketing.html">Marketing</a></li>
+        <li class="nav-item"><a class="nav-link" href="rates.html">Rates</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="ticker">
+  <span class="ticker-inner">⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp;NATURAL ENERGY MONOPOLY IN MEXICO &nbsp;&nbsp;&nbsp; 45.3 MILLION CLIENTS &nbsp;&nbsp;&nbsp;70% NATIONAL ELECTRICITY GENERATION &nbsp;&nbsp;&nbsp; STATE PRODUCTIVE COMPANY &nbsp;&nbsp;&nbsp; FOUNDED IN 1937 &nbsp;&nbsp;&nbsp; ⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<section id="marketing">
+  <div class="section-label">05 — Marketing Strategy</div>
+  <h2 class="section-title">POSITIONING</h2>
+  <div class="mktg-grid">
+    <div class="mktg-cell">
+      <h4>Pricing Strategy</h4>
+      <p>CFE does not compete on price — it sets it. Rates are regulated by the government and differentiated by user type: residential, high-consumption residential (DAC), commercial and industrial. Subsidies to the residential sector allow <span class="highlight">low prices</span> that reinforce service dependence.</p>
+    </div>
+    <div class="mktg-cell">
+      <h4>Promotion</h4>
+      <p>Being a monopoly, CFE does not need advertising to attract customers. Its marketing focuses on institutional image and sustainability (<span class="highlight">CFE Green</span>, clean energy). The most powerful contact point is the bimonthly bill — it reaches <span class="highlight">100% of its market</span> at no advertising cost.</p>
+    </div>
+    <div class="mktg-cell">
+      <h4>Positioning</h4>
+      <p>CFE positions itself as a strategic national company, pride of Mexico. It does not seek to be "preferred" — it seeks to be perceived as <span class="highlight">reliable and essential</span>. It reinforces its image with the energy sovereignty narrative: "energy belongs to Mexicans".</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">⚡ CFE</div>
+  <div style="font-size:12px; color:rgba(245,245,240,0.3); font-family:'IBM Plex Mono',monospace;">FEDERAL COMMISSION OF ELECTRICITY · STATE-OWNED PRODUCTIVE ENTERPRISE · MEXICO</div>
+  <div style="font-size:11px; color:rgba(245,245,240,0.2); font-family:'IBM Plex Mono',monospace;">Microeconomic Analysis · Natural Monopoly · by Diego Ramirez & Lua Garcia</div>
+</footer>
+
+<script>
+  const menuToggle = document.querySelector('.navbar-toggler');
+  const navMenu = document.getElementById('navMenu');
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      const newExpanded = !isExpanded;
+      menuToggle.setAttribute('aria-expanded', String(newExpanded));
+      if (newExpanded) {
+        navMenu.classList.add('show');
+      } else {
+        navMenu.classList.remove('show');
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+        navMenu.classList.remove('show');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFE — Rates</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root {
+    --verde: #00A859;
+    --verde-dark: #007A40;
+    --verde-neon: #00FF88;
+    --negro: #0A0A0A;
+    --gris-oscuro: #111111;
+    --gris: #1E1E1E;
+    --blanco: #F5F5F0;
+    --amarillo: #FFD600;
+    --rojo: #E63946;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--negro); color: var(--blanco); font-family: 'IBM Plex Sans', sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,168,89,0.2);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: var(--verde); }
+  .cfe-badge {
+     display: inline-flex; align-items: center; justify-content: center; width: 130px; height: 46px; background-image: url(CFElogo.png); background-size: contain; background-repeat: no-repeat;
+    }  .logo-bolt { width: 32px; height: 32px; background: var(--verde); clip-path: polygon(60% 0%, 40% 45%, 70% 45%, 40% 100%, 60% 55%, 30% 55%); animation: pulse-bolt 2s infinite; }
+  @keyframes pulse-bolt { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links .nav-link { color: rgba(245,245,240,0.8); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links .nav-link:hover { color: var(--verde-neon); }
+  .navbar-toggler { border-color: rgba(255,255,255,0.2); background: transparent; }
+  .navbar-toggler-icon { position: relative; width: 24px; height: 2px; background: var(--blanco); display: inline-block; }
+  .navbar-toggler-icon::before, .navbar-toggler-icon::after { content: ''; position: absolute; width: 24px; height: 2px; background: var(--blanco); left: 0; }
+  .navbar-toggler-icon::before { top: -7px; }
+  .navbar-toggler-icon::after { top: 7px; }
+
+  @media (max-width: 992px) {
+    nav { padding: 14px 18px; }
+    .navbar-collapse { background: rgba(10,10,10,0.96); border-top: 1px solid rgba(0,168,89,0.15); transition: all 0.3s ease; max-height: 0; overflow: hidden; }
+    .navbar-collapse.show { max-height: 300px; }
+    .nav-links { flex-direction: column; gap: 14px; padding: 18px 0; }
+    .nav-links .nav-link { font-size: 14px; }
+  }
+
+  .ticker { background: var(--verde); color: #000; padding: 10px 0; overflow: hidden; white-space: nowrap; margin-top: 64px; }
+  .ticker-inner { display: inline-block; animation: ticker 35s linear infinite; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 2px; }
+  @keyframes ticker { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
+
+  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--verde); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--verde); }
+
+  .pricing-hero { text-align: center; padding: 80px 48px; background: var(--gris-oscuro); border: 1px solid rgba(0,168,89,0.2); position: relative; overflow: hidden; max-width: 1200px; margin: 80px auto 0; }
+  .pricing-hero::before { content: 'CFE'; position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 300px; color: rgba(0,168,89,0.04); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; letter-spacing: -10px; }
+  .pricing-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 72px); margin-bottom: 8px; position: relative; z-index: 1; }
+  .pricing-hero > p { font-size: 13px; font-family: 'IBM Plex Mono', monospace; color: var(--verde); letter-spacing: 3px; margin-bottom: 40px; position: relative; z-index: 1; }
+
+  .pricing-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; background: rgba(0,168,89,0.1); position: relative; z-index: 1; }
+  .tier { background: var(--gris-oscuro); padding: 32px 24px; text-align: left; transition: all 0.3s ease; position: relative; overflow: hidden; cursor: pointer; }
+  .tier::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--verde), var(--verde-neon)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .tier:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,168,89,0.2); }
+  .tier:hover::before { transform: scaleX(1); }
+  .tier-name { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--verde); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; transition: color 0.3s; }
+  .tier:hover .tier-name { color: var(--verde-neon); }
+  .tier-kwh { font-family: 'Bebas Neue', sans-serif; font-size: 32px; margin-bottom: 4px; transition: transform 0.3s; }
+  .tier:hover .tier-kwh { transform: scale(1.1); }
+  .tier-price { font-size: 13px; color: rgba(245,245,240,0.4); transition: color 0.3s; }
+  .tier:hover .tier-price { color: var(--verde-neon); font-weight: 600; }
+  .highlight { color: var(--verde-neon); font-weight: 700; position: relative; }
+  .highlight::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: var(--verde-neon); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+  .tier:hover .highlight::after { transform: scaleX(1); }
+
+  .ads-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2px; background: rgba(0,168,89,0.1); max-width: 1200px; margin: 48px auto 0; }
+  .ad-banner { background: linear-gradient(135deg, #0A2A1A 0%, #0D3D22 50%, #0A2A1A 100%); padding: 60px 48px; position: relative; overflow: hidden; border: 1px solid rgba(0,168,89,0.2); transition: all 0.3s; cursor: pointer; }
+  .ad-banner::before { content: '⚡'; position: absolute; font-size: 200px; right: -20px; bottom: -40px; opacity: 0.06; transition: all 0.3s; }
+  .ad-banner:hover { border-color: var(--verde); box-shadow: 0 20px 50px rgba(0,168,89,0.15); }
+  .ad-banner:hover::before { opacity: 0.12; transform: rotate(20deg) scale(1.1); }
+  .ad-slogan { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 64px); line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+  .ad-banner:hover .ad-slogan { color: var(--verde-neon); }
+  .ad-slogan em { color: var(--verde-neon); font-style: normal; transition: all 0.3s; }
+  .ad-banner:hover .ad-slogan em { text-shadow: 0 0 20px var(--verde-neon); }
+  .ad-body { font-size: 15px; color: rgba(245,245,240,0.6); max-width: 380px; line-height: 1.7; margin-bottom: 32px; transition: color 0.3s; }
+  .ad-banner:hover .ad-body { color: rgba(245,245,240,0.8); }
+  .btn-primary { background: var(--verde); color: #000; padding: 16px 36px; font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.3s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); position: relative; overflow: hidden; }
+  .btn-primary::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+  .btn-primary:hover { background: var(--verde-neon); transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 25px rgba(0,255,136,0.3); }
+  .btn-primary:hover::before { width: 300px; height: 300px; }
+  .ad-side { display: flex; flex-direction: column; gap: 2px; }
+  .ad-mini { background: var(--gris-oscuro); padding: 32px; flex: 1; display: flex; flex-direction: column; justify-content: center; border: 1px solid rgba(0,168,89,0.1); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
+  .ad-mini::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,168,89,0.2) 0%, transparent 70%); opacity: 0; transition: all 0.4s; }
+  .ad-mini:hover { transform: translateY(-6px); border-color: var(--verde); box-shadow: 0 15px 35px rgba(0,168,89,0.15); }
+  .ad-mini:hover::before { opacity: 1; right: 10%; top: 10%; }
+  .ad-mini-icon { font-size: 32px; margin-bottom: 12px; transition: transform 0.3s; }
+  .ad-mini:hover .ad-mini-icon { transform: scale(1.3) rotate(-10deg); }
+  .ad-mini h4 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin-bottom: 8px; color: var(--verde); transition: all 0.3s; }
+  .ad-mini:hover h4 { color: var(--verde-neon); transform: translateX(4px); }
+  .ad-mini p { font-size: 12px; color: rgba(245,245,240,0.4); line-height: 1.6; transition: color 0.3s; }
+  .ad-mini:hover p { color: rgba(245,245,240,0.7); }
+
+  footer { background: var(--gris-oscuro); border-top: 1px solid rgba(0,168,89,0.15); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 0; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: var(--verde); }
+
+  @media(max-width:768px){
+    nav{padding:16px 24px;}
+    .pricing-hero { padding: 60px 24px; margin: 60px auto 0; }
+    .pricing-tiers { grid-template-columns: 1fr; }
+    .ads-grid { grid-template-columns: 1fr; }
+    footer{flex-direction:column;text-align:center;}
+  }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-item { opacity: 0; transform: translateY(30px); animation: fade-in 0.7s ease forwards; }
+  .fade-delay-1 { animation-delay: 0.12s; }
+  .fade-delay-2 { animation-delay: 0.22s; }
+  .fade-delay-3 { animation-delay: 0.34s; }
+
+  .CFEbutton{
+    height: 46px;
+    width: 130px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-expand-lg">
+  <div class="container-fluid">
+    <div class="nav-logo">
+      <div class="cfe-badge"><a class="nav-link" href="tinoco.html"><button class="CFEbutton"></button></a></div>
+      <div class="logo-bolt"></div>
+    </div>
+    <button class="navbar-toggler" type="button" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="nav-links navbar-nav align-items-center">
+        <li class="nav-item"><a class="nav-link" href="service.html">Service</a></li>
+        <li class="nav-item"><a class="nav-link" href="market.html">Market</a></li>
+        <li class="nav-item"><a class="nav-link" href="analysis.html">Analysis</a></li>
+        <li class="nav-item"><a class="nav-link" href="marketing.html">Marketing</a></li>
+        <li class="nav-item"><a class="nav-link" href="rates.html">Rates</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="ticker">
+  <span class="ticker-inner">⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp;NATURAL ENERGY MONOPOLY IN MEXICO &nbsp;&nbsp;&nbsp; 45.3 MILLION CLIENTS &nbsp;&nbsp;&nbsp;70% NATIONAL ELECTRICITY GENERATION &nbsp;&nbsp;&nbsp; STATE PRODUCTIVE COMPANY &nbsp;&nbsp;&nbsp; FOUNDED IN 1937 &nbsp;&nbsp;&nbsp; ⚡ CFE — COMISIÓN FEDERAL DE ELECTRICIDAD &nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<div id="tarifas" style="background:var(--negro); border-bottom:1px solid rgba(0,168,89,0.15);">
+  <div class="pricing-hero">
+    <div class="section-label" style="margin-bottom:24px;">06 — Marketing Execution (Demo)</div>
+    <h2>CFE 2024 RATES</h2>
+    <p><span class="highlight">RESIDENTIAL DOMESTIC RATE</span></p>
+    <div class="pricing-tiers">
+      <div class="tier fade-item fade-delay-1">
+        <div class="tier-name">Rate 1 · Basic</div>
+        <div class="tier-kwh">0–75 kWh</div>
+        <div class="tier-price">$0.793 per kWh — subsidized</div>
+      </div>
+      <div class="tier fade-item fade-delay-2" style="border:1px solid var(--verde);">
+        <div class="tier-name" style="color:var(--amarillo);">Rate 1 · Standard</div>
+        <div class="tier-kwh">76–140 kWh</div>
+        <div class="tier-price">$0.958 per kWh — standard</div>
+      </div>
+      <div class="tier fade-item fade-delay-3">
+        <div class="tier-name" style="color:var(--rojo);">DAC Rate</div>
+        <div class="tier-kwh">+250 kWh/month</div>
+        <div class="tier-price">$4.797 per kWh — no subsidy</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px; margin:0 auto; padding:48px;">
+    <div class="section-label" style="margin-bottom:32px;">Simulated Ads</div>
+    <div class="ads-grid">
+      <div class="ad-banner fade-item fade-delay-1">
+        <div class="ad-slogan">ENERGY FOR<br><em>EVERYONE</em><br>FOR ALL.</div>
+        <p class="ad-body">CFE brings electricity to every corner of Mexico. <span class="highlight">99.7% national coverage</span>. Because light is not a luxury — it is a right.</p>
+        <button class="btn-primary" onclick="window.open('https://www.cfe.mx', '_blank')">Check Your Bill Online</button>
+      </div>
+      <div class="ad-side">
+        <div class="ad-mini fade-item fade-delay-2">
+          <div class="ad-mini-icon">☀️</div>
+          <h4>CFE Green</h4>
+          <p>Solar panels with CFE financing. Generate your own energy and sell the surplus to the grid.</p>
+        </div>
+        <div class="ad-mini fade-item fade-delay-3">
+          <div class="ad-mini-icon">📱</div>
+          <h4>CFE With You App</h4>
+          <p>Pay your bill, report outages and check your consumption from your phone. Available 24/7.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">⚡ CFE</div>
+  <div style="font-size:12px; color:rgba(245,245,240,0.3); font-family:'IBM Plex Mono',monospace;">FEDERAL COMMISSION OF ELECTRICITY · STATE-OWNED PRODUCTIVE ENTERPRISE · MEXICO</div>
+  <div style="font-size:11px; color:rgba(245,245,240,0.2); font-family:'IBM Plex Mono',monospace;">Microeconomic Analysis · Natural Monopoly · by Diego Ramirez & Lua Garcia</div>
+</footer>
+
+<script>
+  const menuToggle = document.querySelector('.navbar-toggler');
+  const navMenu = document.getElementById('navMenu');
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      const newExpanded = !isExpanded;
+      menuToggle.setAttribute('aria-expanded', String(newExpanded));
+      if (newExpanded) {
+        navMenu.classList.add('show');
+      } else {
+        navMenu.classList.remove('show');
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+        navMenu.classList.remove('show');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
